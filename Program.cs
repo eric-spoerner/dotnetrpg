@@ -13,9 +13,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(); //Solution for APi testing.
 }
 
+//"Use" funcs are middleware extensions
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
