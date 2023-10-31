@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetrpg.Services.CharacterService;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetrpg.Controllers
@@ -10,11 +12,26 @@ namespace dotnetrpg.Controllers
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase
     {
-        private static Character goober = new Character();
+        private readonly ICharacterService _characterService;
 
-        [HttpGet]
-        public ActionResult<Character> Get(){
-            return Ok(goober);
+        public CharacterController(ICharacterService characterService)
+        {
+            _characterService = characterService;
+        }
+
+        [HttpGet("GetAll")]
+        public ActionResult<List<Character>> Get(){
+            return Ok(_characterService.GetAllCharacters());
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Character> GetSingle(int id){
+            return Ok(_characterService.GetCharacterByID(id));
+        }
+
+        [HttpPost]
+        public ActionResult<List<Character>> AddCharacter(Character newCharacter) {
+            return Ok(_characterService.AddCharacter(newCharacter));
         }
     }
 }
